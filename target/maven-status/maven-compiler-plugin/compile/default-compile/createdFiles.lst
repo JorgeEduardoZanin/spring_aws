@@ -1,0 +1,7 @@
+project\aws\repository\ProductRepository.class
+project\aws\service\ProductService.class
+project\aws\AwsCloudApplication.class
+project\aws\entity\Product.class
+project\aws\resource\ProductResource.class
+project\aws\config\WebConfig.class
+project\aws\config\OpenAPIConfig.class
