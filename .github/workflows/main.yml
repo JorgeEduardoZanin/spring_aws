@@ -27,7 +27,7 @@ jobs:
 
       # 3. Build com Maven (gera target/app.jar)
       - name: Build com Maven
-        run: mvn clean package --batch-mode                  
+        run: mvn clean package --DskipTests               
 
       # 4. Empacota em ZIP (inclui o JAR)
       - name: Empacotar para Elastic Beanstalk
