@@ -29,10 +29,6 @@ jobs:
       - name: Build com Maven
         run: mvn clean package -DskipTests               
 
-      # 4. Empacota em ZIP (inclui o JAR)
-      - name: Empacotar para Elastic Beanstalk
-        run: zip -r deploy.zip target/app.jar
-
       # 5. Configura credenciais AWS
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1        
@@ -51,4 +47,4 @@ jobs:
           environment_name: ${{ env.EB_ENVIRONMENT }}
           version_label: ${{ github.run_number }}-$(date +%s)
           region: ${{ env.AWS_REGION }}
-          deployment_package: deploy.zip
+          deployment_package: target/product-api.jar
