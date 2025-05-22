@@ -1,0 +1,50 @@
+name: CI/CD para Elastic Beanstalk
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  AWS_REGION: ${{ secrets.AWS_REGION }}                    # sua região AWS
+  EB_APPLICATION: product-api                  # nome do Application no Beanstalk
+  EB_ENVIRONMENT: Product-api-env                 # nome do Environment no Beanstalk
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Clona o repositório
+      - name: Checkout do código
+        uses: actions/checkout@v4                          
+
+      # 2. Configura Java e Maven
+      - name: Setup Java
+        uses: actions/setup-java@v4                         
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      # 3. Build com Maven (gera target/app.jar)
+      - name: Build com Maven
+        run: mvn clean package -DskipTests               
+
+      # 5. Configura credenciais AWS
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1        
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      # 6. Deploy no Elastic Beanstalk
+      - name: Deploy para Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22         
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ env.EB_APPLICATION }}
+          environment_name: ${{ env.EB_ENVIRONMENT }}
+          version_label: ${{ github.run_number }}-$(date +%s)
+          region: ${{ env.AWS_REGION }}
+          deployment_package: target/product-api.jar
