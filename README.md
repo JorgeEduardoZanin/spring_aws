@@ -5,7 +5,8 @@
 Este é um projeto básico para estudo dos principais serviços da AWS, composto por:
 
 - **Backend:** Spring Boot  
-  - Implantado no **Elastic Beanstalk**  
+  - Implantado no **Elastic Beanstalk**
+![Diagrama AWS](docs/ebs.png)
   - Conecta-se a um banco **MySQL** hospedado no **Amazon RDS**
 - **Frontend:** Angular  
   - Build estático hospedado no **Amazon S3** (site estático)
